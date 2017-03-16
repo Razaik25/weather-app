@@ -60,6 +60,7 @@ function getLocations(req,res,next) {
     .then ((data) =>{
       console.log("query location", data);
       res.data = data;
+      next();
     })
     .catch((err) => {
       res.data = "error";
