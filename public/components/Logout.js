@@ -17,7 +17,6 @@ class Logout extends Component {
     console.log("%c Logout Component -> Render ", "background: black; color: pink");
     return (
       <div >
-        <FlatButton>Logout</FlatButton>
       </div>
     );
   }

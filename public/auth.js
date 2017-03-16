@@ -1,19 +1,22 @@
 import axios from "axios";
+/*
+Referenced form react-router docs
+ */
 module.exports = {
   login(email, pass, cb) {
-    cb = arguments[arguments.length - 1]
+    cb = arguments[arguments.length - 1];
     if (localStorage.token) {
-      if (cb) cb(true)
-      this.onChange(true)
+      if (cb) cb(true);
+      this.onChange(true);
       return
     }
     loginRequest(email, pass, (res) => {
       if (res.authenticated) {
-        localStorage.token = res.token
-        if (cb) cb(true)
+        localStorage.token = res.token;
+        if (cb) cb(true);
         this.onChange(true)
       } else {
-        if (cb) cb(false)
+        if (cb) cb(false);
         this.onChange(false)
       }
     })
@@ -25,8 +28,8 @@ module.exports = {
   },
 
   logout(cb) {
-    delete localStorage.token
-    if (cb) cb()
+    delete localStorage.token;
+    if (cb) cb();
     this.onChange(false)
   },
 
@@ -35,7 +38,7 @@ module.exports = {
   },
 
   onChange() {}
-}
+};
 
 
 

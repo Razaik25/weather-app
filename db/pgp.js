@@ -9,7 +9,7 @@ var cn = {
   database: process.env.DB_DATABASE,
   user: process.env.DB_USER,
   password: process.env.DB_PASS
-}
+};
 var db = pgp(cn);
 
 function createSecure(email,password,username,callback) {
@@ -27,7 +27,7 @@ function createUser(req,res,next) {
       [email, hash, username])
       .then((data) => {
         console.log('user created', data);
-        res.rows = data;
+        res.data = data;
         next()
       })
       .catch((err) => {
@@ -40,15 +40,13 @@ function createUser(req,res,next) {
 function loginUser(req,res,next) {
   var email = req.body.email;
   var password = req.body.password;
-  db.one("SELECT * from users WHERE email LIKE $1;" ,[email])
+  db.one("SELECT * from users WHERE email =($1);" ,[email])
     .then ((data) =>{
-      console.log("login theb", data);
       if(bcrypt.compareSync(password,data.password_digest)){
-        res.rows = data;
+        res.data = data;
         next();
       } else {
         res.status(401).json({data:"password and email do not match"});
-         // res.rows = "password and email do not match";
         next();
       }
     })
@@ -57,5 +55,35 @@ function loginUser(req,res,next) {
     });
 }
 
-module.exports.createUser = createUser;
-module.exports.loginUser = loginUser;
+function getLocations(req,res,next) {
+  db.any("SELECT * from users_locations WHERE users_id=($1);" ,[req.user.id])
+    .then ((data) =>{
+      console.log("query location", data);
+      res.data = data;
+    })
+    .catch((err) => {
+      res.data = "error";
+      console.log('error in getting locations', err);
+    });
+}
+
+function createLocation (req, res, next) {
+  db.any(`INSERT INTO users_locations(users_id, name, country, weather_desc, icon,
+    temp, temp_max, temp_min, wind, humidity,clouds, pressure)
+    VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+     RETURNING id`, [req.user.id, req.body.name, req.body.country, req.body.weather_desc, req.body.icon, req.body.temp, req.body.temp_max, req.body.temp_min, req.body.wind, req.body.humidity, req.body.clouds, req.body.pressure])
+    .then(function(data) {
+      res.data = data;
+      next();
+    })
+    .catch(function(error) {
+      console.log(error);
+    })
+}
+
+module.exports = {
+  createUser: createUser,
+  loginUser: loginUser,
+  getLocations: getLocations,
+  createLocation: createLocation
+};

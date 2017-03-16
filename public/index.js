@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import injectTapEventPlugin from "react-tap-event-plugin";
-import {Router, Route, Link, browserHistory} from 'react-router';
-import {AppBar} from "material-ui";
+import {Router, Route, Link, browserHistory, IndexRoute} from 'react-router';
+import {AppBar, FlatButton} from "material-ui";
 import auth from "./auth";
 import Login from "./components/Login";
 import Home from "./components/Home";
@@ -34,36 +34,49 @@ export default class App extends Component {
   updateAuth(loggedIn) {
     this.setState({
       loggedIn: loggedIn
-    })
+    });
   }
 
   componentWillMount() {
     auth.onChange = this.updateAuth;
-    auth.login()
+    auth.login();
   }
 
+
   render() {
-    console.log("%c App Component -> Render ", "background: black; color: pink");
+    // put the contents of the div inside the card
+    console.log("%c App Component -> Render ", "background: black; color: pink", this.state);
     return (
       <MuiThemeProvider>
         <div>
-          Welcome to Weather Bug
-          <ul>
-            <li>
-              {this.state.loggedIn ? (
-                <Link to="/logout">Log out</Link>
-              ) : (
-                <Link to="/login">Log in</Link>
-              )}
-            </li>
-            <li><Link to="/signup">Sign Up</Link></li>
-          </ul>
-          {this.props.children || <p>You are {!this.state.loggedIn && 'not'} logged in.</p>}
+          {this.state.loggedIn ?
+            <div>
+              <AppBar
+                style={{backgroundColor: "#7E57C2"}}
+                title="Weather Bug"
+                showMenuIconButton={false}
+                iconElementRight={<FlatButton><Link to="/logout">Logout</Link></FlatButton>}
+              />
+              {this.props.children || <p>You are {!this.state.loggedIn && 'not'} logged in.</p>}
+            </div> :
+            <div >
+              <h2>Welcome to Weather Bug</h2>
+              <ul>
+                <li>
+                  {this.state.loggedIn ? ( <Link to="/logout">Log out</Link> )
+                    : ( <Link to="/login">Log In</Link> )}
+                </li>
+                <li><Link to="/signup">Sign Up</Link></li>
+              </ul>
+              {this.props.children || <p>You are {!this.state.loggedIn && 'not'} logged in.</p>}
+            </div>
+          }
         </div>
       </MuiThemeProvider>
     );
   }
 }
+
 
 ReactDOM.render((
   <Router history={browserHistory}>

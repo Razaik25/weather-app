@@ -27,7 +27,7 @@ class Login extends Component {
       if (location.state && location.state.nextPathname) {
         this.context.router.replace(location.state.nextPathname);
       } else {
-        this.context.router.replace('/');
+        this.context.router.replace('/home');
       }
     })
   }
