@@ -21,5 +21,7 @@ CREATE TABLE users_locations (
   humidity TEXT,
   clouds TEXT,
   pressure TEXT,
+  location_id INTEGER UNIQUE,
+  unix_timestamp INTEGER,
   users_id INTEGER REFERENCES users
 );

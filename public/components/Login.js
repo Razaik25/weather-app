@@ -1,7 +1,6 @@
 import React, {Component} from "react";
-import {FlatButton, TextField} from "material-ui";
+import {RaisedButton, TextField} from "material-ui";
 import auth from "../auth";
-
 
 class Login extends Component {
   constructor(props, context) {
@@ -36,19 +35,33 @@ class Login extends Component {
     // have to add validations here
     console.log("%c Login Component -> Render ", "background: black; color: pink");
     return (
-      <div >
+      <div className="fullwidth backgroundimage fullheight columnflexcontainer ">
+        <div className="Wrap">
+          <div className="cardstyles" >
+            <div action="javascript:" className="inlineflexcontainer fullwidth AdjustPad" onSubmit={this.submit}>
+              <div  className="padd ">
           <TextField
             ref = "email"
             errorText={null}
+            fullWidth={true}
             hintText="Email"
             />
+            </div>
+              <div  className="padd ">
           <TextField
             ref = "pass"
             errorText={null}
+            fullWidth={true}
             type = "password"
             hintText="Password"
           />
-          <FlatButton onClick ={this.handleSubmit} >Sign In</FlatButton>
+            </div>
+           <div  className="flexend  padd">
+          <RaisedButton onClick ={this.handleSubmit} >Sign In</RaisedButton>
+          </div>
+      </div>
+      </div>
+      </div>
       </div>
     );
   }
@@ -57,5 +70,6 @@ class Login extends Component {
 Login.contextTypes = {
   router: React.PropTypes.object.isRequired
 };
-
+Login.defaultProps = {};
+Login.propTypes = {};
 export default Login;

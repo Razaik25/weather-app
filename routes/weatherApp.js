@@ -16,7 +16,7 @@ weatherApp.use(function (error, request, response, next) {
 
 weatherApp.use(expressJWT({secret: secret}));
 
-weatherApp.get('/', callOpenWeather, (req,res) =>{
+weatherApp.get('/', callOpenWeather, (req, res) => {
   res.send(result);
 });
 
@@ -24,15 +24,23 @@ weatherApp.post('/', db.createLocation, (req, res) => {
   res.send(res.data);
 });
 
-weatherApp.get('/getlocations', db.getLocations , (req,res) =>{
+weatherApp.get('/getlocations', db.getLocations, (req, res) => {
   res.send(res.data);
 });
 
+weatherApp.put('/updatelocation', db.updateLocation, (req, res) => {
+  res.send(res.data);
+});
+
+weatherApp.delete('/deletelocation', db.deleteLocation, (req, res) => {
+  res.send('location deleted succesfully');
+});
+
 /*
-remove the hardcode of units
+ remove the hardcode of units
  */
 function callOpenWeather(req, res, next) {
-  request(`  http://api.openweathermap.org/data/2.5/weather?q=${req.query.location}&appid=${API_KEY}&units=metric`, (err, response, body) => {
+  request(`http://api.openweathermap.org/data/2.5/weather?q=${req.query.location}&appid=${API_KEY}&units=metric`, (err, response, body) => {
     result = JSON.parse(body);
     next();
   })

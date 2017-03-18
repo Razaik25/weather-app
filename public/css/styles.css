@@ -1,0 +1,52 @@
+.comtainer {
+    position: relative;
+}
+.columnflexcontainer,.inlineflexcontainer{
+    display: flex;
+    flex-direction:column ;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.padding30{
+    padding: 30px;
+}
+.inlineflexcontainer,.flexend{
+    display: inline-flex;
+}
+.cardstyles{
+    color: rgba(0, 0, 0, 0.870588);
+    background-color: rgb(255, 255, 255);
+    transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
+    box-sizing: border-box;
+    font-family: Roboto, sans-serif;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    box-shadow: rgba(0, 0, 0, 0.117647) 0px 1px 6px, rgba(0, 0, 0, 0.117647) 0px 1px 4px;
+    border-radius: 2px;
+    z-index: 1;
+    display: block;
+}
+.fullwidth,.flexend{
+    width: 100%;
+}
+.padd{
+    padding: 10px 20px;
+    width: 85%;
+}
+.Wrap{
+    width: 38%;
+    margin:0 auto;
+
+}
+.AdjustPad{
+    padding: 18px 1px;
+}
+.backgroundimage{
+    background: url("./background.jpg") center no-repeat;
+}
+.fullheight{
+    height: 100vh;
+}
+.flexend{
+    justify-content: flex-end;
+}

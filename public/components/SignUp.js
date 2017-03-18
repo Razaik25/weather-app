@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {FlatButton, TextField} from "material-ui";
+import {RaisedButton, TextField} from "material-ui";
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 
 class SignUp extends Component {
@@ -47,41 +47,49 @@ class SignUp extends Component {
     // add validation for same user name and email
     console.log("%c SignUp Component -> Render ", "background: black; color: pink");
     return (
-      <div >
-        <Card>
-          <CardText>
-            <form action="javascript:" onSubmit={this.submit}>
-              {/*<div className={{error:1, showing:error}}>{ error || null }</div>*/}
-              <div style={{transition: 'all 500ms ease', overflow: 'hidden'}}>
+      <div className="fullwidth backgroundimage fullheight columnflexcontainer ">
+      <div className="Wrap">
+      <div className="cardstyles" >
+            <div className="inlineflexcontainer fullwidth AdjustPad" onSubmit={this.submit}>
+              <div  className="padd ">
                 <TextField
+                  style={{background: "transparent"}}
                   hintText="Username"
                   ref="username"
-                  pattern="^[a-z0-9_.-]+$"
+                  fullWidth={true}
                   required={true}
                   onInput={ this.linkState('name') }
                 />
               </div>
-
+              <div className="padd ">
               <TextField
+                style={{background: "transparent"}}
                 hintText="Email"
                 ref="email"
                 type="email"
                 required={true}
+                fullWidth={true}
                 onInput={ this.linkState('email') }
                 onChange={ this.checkEmail }
               />
+               </div>
+              <div className="padd">
               <TextField
+                style={{background: "transparent"}}
                 hintText="Password"
                 ref="pass"
                 type="password"
+                fullWidth={true}
                 required={true}
                 onInput={ this.linkState('password') }
               />
-              <FlatButton onClick={this.handleSubmit}>Sign In</FlatButton>
-            </form>
-          </CardText>
-        </Card>
-
+               </div>
+              <div className="flexend padd">
+              <RaisedButton onClick={this.handleSubmit}>Sign In</RaisedButton>
+               </div>
+              </div>
+      </div>
+      </div>
       </div>
     );
   }
@@ -90,5 +98,6 @@ class SignUp extends Component {
 SignUp.contextTypes = {
   router: React.PropTypes.object.isRequired
 };
-
+SignUp.defaultProps = {};
+SignUp.propTypes = {};
 export default SignUp;

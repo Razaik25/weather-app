@@ -21,5 +21,6 @@ class Logout extends Component {
     );
   }
 }
-
+Logout.defaultProps = {};
+Logout.propTypes = {};
 export default Logout;
