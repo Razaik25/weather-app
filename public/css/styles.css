@@ -63,3 +63,6 @@
 .flexEnd{
     justify-content: flex-end;
 }
+.center {
+    text-align: center;
+}

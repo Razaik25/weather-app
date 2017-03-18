@@ -51,7 +51,9 @@ function loginUser(req,res,next) {
       }
     })
     .catch((err) => {
+      res.status(500).json({data:"error finding users"});
       console.log('error finding users', err);
+      next();
     });
 }
 

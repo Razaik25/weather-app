@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {TextField, FlatButton, Card, CardActions, CardHeader, CardTitle, CardText} from "material-ui";
+import {TextField, FlatButton, Card, CardActions, CardHeader, CardTitle, CardText, Snackbar} from "material-ui";
 import axios from "axios";
 import auth from "../auth";
 import _ from "lodash";
@@ -34,6 +34,8 @@ class Home extends Component {
       error: false,
       searchResult: null,
       savedLocations: null,
+      snackbar: false,
+      snackbarMsg: "",
       searchQuery: ""
     };
     this.getLocations();
@@ -42,7 +44,14 @@ class Home extends Component {
     this.handleSaveLocation = this.handleSaveLocation.bind(this);
     this.checkForUpdates = this.checkForUpdates.bind(this);
     this.handleClearSearch = this.handleClearSearch.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);
     console.log("%c Home Component -> Init ", "background: red; color: white");
+  }
+
+  handleRequestClose() {
+    this.setState({
+      snackbar: false
+    });
   }
 
   handleSaveLocation() {
@@ -95,13 +104,14 @@ class Home extends Component {
       .then(function (response) {
         console.log("deleted location", response);
         this.setState({
-          snackBarMsg: `${response.data.name} location deleted successfully`
-        })
+          snackbar: true,
+          snackbarMsg: `${response.data.name} deleted successfully`
+        });
+        this.getLocations();
       }.bind(this))
       .catch(function (error) {
         console.error(error);
       }.bind(this));
-    this.getLocations();
   }
 
   handleClearSearch() {
@@ -196,19 +206,26 @@ class Home extends Component {
               }
             })
               .then(function (response) {
-                console.log("test data updated at the backend", response);
+                console.log("data updated at the backend", response);
+                self.setState({
+                  snackbar: true,
+                  snackbarMsg: "Your Saved locations have been updated successfully"
+                });
                 self.getLocations();
               })
               .catch(function (error) {
                 console.error("error in updating locations",error);
               });
+          } else {
+            self.setState({
+              snackbar: true,
+              snackbarMsg: "Data for all locations is upto date"
+            });
           }
         })
-        .catch(function (error) {
-          console.error(error);
-        });
     });
   }
+
 
   handleUpdateInput(event) {
     this.setState({
@@ -216,22 +233,49 @@ class Home extends Component {
     });
   }
 
+  validateSearch() {
+    let sameLocation;
+    sameLocation =  this.state.savedLocations.some(function (location) {
+      return location.name.toUpperCase() === this.state.searchQuery.toUpperCase();
+    }.bind(this));
+    return sameLocation;
+  }
+
   handleSearch() {
-    axios({
-      method: 'get',
-      url: `/weatherApp?location=${this.state.searchQuery}`,
-      headers: {'Authorization': `Bearer ${auth.getToken()}`},
-    })
-      .then(function (response) {
-        this.setState({
-          searchResult: processSearchResponse([response.data]),
-          searchQuery: ""
-        });
-      }.bind(this))
-      .catch(function (error) {
-        // handle different error cases
-        console.error(error);
-      }.bind(this));
+    if(!this.validateSearch()) {
+      axios({
+        method: 'get',
+        url: `/weatherApp?location=${this.state.searchQuery}`,
+        headers: {'Authorization': `Bearer ${auth.getToken()}`},
+      })
+        .then(function (response) {
+          this.setState({
+            searchResult: processSearchResponse([response.data]),
+            searchQuery: ""
+          });
+        }.bind(this))
+        .catch(function (error) {
+          console.log("get for search",error);
+          if(error.response.data.message === "City not Found") {
+            this.setState({
+              snackbar: true,
+              snackbarMsg: response.data.message,
+              searchQuery: ""
+            });
+          } else {
+            this.setState({
+              snackbar: true,
+              snackbarMsg: "Oops, Something went wrong with the server. Please try again",
+              searchQuery: ""
+            });
+          }
+        }.bind(this));
+    } else {
+      this.setState({
+        snackbar: true,
+        snackbarMsg: "You are already tracking this location"
+      });
+    }
   }
 
   render() {
@@ -240,7 +284,7 @@ class Home extends Component {
       <div className="container">
         <div>
           <TextField
-            hintText="City Name"
+            floatingLabelText="City Name"
             value={this.state.searchQuery}
             onChange={this.handleUpdateInput}
           />
@@ -258,6 +302,13 @@ class Home extends Component {
           label="Update locations"
           primary={true}
           onTouchTap={this.checkForUpdates}
+        />
+        <Snackbar
+          className="center"
+          open={this.state.snackbar}
+          message={this.state.snackbarMsg}
+          autoHideDuration={3000}
+          onRequestClose={this.handleRequestClose}
         />
       </div>
     );

@@ -17,7 +17,11 @@ weatherApp.use(function (error, request, response, next) {
 weatherApp.use(expressJWT({secret: secret}));
 
 weatherApp.get('/', callOpenWeather, (req, res) => {
-  res.send(result);
+  if(result.cod === "404" && result.message ==="city not found") {
+    res.status(500).send({message: 'City not Found'})
+  } else {
+    res.send(result);
+  }
 });
 
 weatherApp.post('/', db.createLocation, (req, res) => {

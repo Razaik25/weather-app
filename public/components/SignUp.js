@@ -85,7 +85,7 @@ class SignUp extends Component {
   }
 
   render() {
-    console.log("%c SignUp Component -> Render ", "background: black; color: pink");
+    console.log("%c SignUp Component -> Render ", "background: black; color: pink", this.state);
     return (
       <div className="fullWidth backgroundImage fullHeight columnflexcontainer ">
         <div className="wrap">

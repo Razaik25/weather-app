@@ -9,6 +9,7 @@ class Login extends Component {
     this.state = {
       error: false,
       snackbar: false,
+      snackbarMsg: "",
       emailError: "",
       passwordError: "",
       isDirty: true
@@ -59,7 +60,7 @@ class Login extends Component {
     event.preventDefault();
     const email = this.refs.email.getValue();
     const pass = this.refs.pass.getValue();
-    auth.login(email, pass, (loggedIn) => {
+    auth.login(email, pass,(loggedIn) => {
       if (!loggedIn)
         return this.setState({
           error: true,
@@ -112,6 +113,7 @@ class Login extends Component {
                 />
               </div>
               <Snackbar
+                className="center"
                 open={this.state.snackbar}
                 message={this.state.snackbarMsg}
                 autoHideDuration={3000}

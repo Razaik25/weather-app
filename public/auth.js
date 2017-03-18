@@ -16,6 +16,7 @@ module.exports = {
         if (cb) cb(true);
         this.onChange(true)
       } else {
+        console.log("hfks",res);
         if (cb) cb(false);
         this.onChange(false)
       }
@@ -52,7 +53,7 @@ function loginRequest(email, pass, cb) {
     })
     .catch((err) => {
       cb({
-        status:401,
+        status:500,
         data: err.response
       })
     })
