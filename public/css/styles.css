@@ -1,12 +1,28 @@
-.comtainer {
+.container {
     position: relative;
+    text-align: center;
+}
+.cardContainer{
+    width: 30%;
+    margin: 10px;
+}
+.capitalize{
+    text-transform: capitalize;
+}
+.columnflexcontainer{
+    flex-direction:column;
+    justify-content: center;
 }
 .columnflexcontainer,.inlineflexcontainer{
     display: flex;
-    flex-direction:column ;
     align-items: center;
-    justify-content: center;
     flex-wrap: wrap;
+}
+.inlineflexcontainer {
+    width: 50%;
+    flex-direction:row ;
+    align-items: center;
+    justify-content:center;
 }
 .padding30{
     padding: 30px;

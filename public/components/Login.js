@@ -37,31 +37,31 @@ class Login extends Component {
     return (
       <div className="fullwidth backgroundimage fullheight columnflexcontainer ">
         <div className="Wrap">
-          <div className="cardstyles" >
+          <div className="cardstyles">
             <div action="javascript:" className="inlineflexcontainer fullwidth AdjustPad" onSubmit={this.submit}>
-              <div  className="padd ">
-          <TextField
-            ref = "email"
-            errorText={null}
-            fullWidth={true}
-            hintText="Email"
-            />
+              <div className="padd ">
+                <TextField
+                  ref="email"
+                  errorText={null}
+                  fullWidth={true}
+                  hintText="Email"
+                />
+              </div>
+              <div className="padd ">
+                <TextField
+                  ref="pass"
+                  errorText={null}
+                  fullWidth={true}
+                  type="password"
+                  hintText="Password"
+                />
+              </div>
+              <div className="flexend  padd">
+                <RaisedButton onClick={this.handleSubmit}>Sign In</RaisedButton>
+              </div>
             </div>
-              <div  className="padd ">
-          <TextField
-            ref = "pass"
-            errorText={null}
-            fullWidth={true}
-            type = "password"
-            hintText="Password"
-          />
-            </div>
-           <div  className="flexend  padd">
-          <RaisedButton onClick ={this.handleSubmit} >Sign In</RaisedButton>
           </div>
-      </div>
-      </div>
-      </div>
+        </div>
       </div>
     );
   }

@@ -33,7 +33,7 @@ weatherApp.put('/updatelocation', db.updateLocation, (req, res) => {
 });
 
 weatherApp.delete('/deletelocation', db.deleteLocation, (req, res) => {
-  res.send('location deleted succesfully');
+  res.send(res.data);
 });
 
 /*

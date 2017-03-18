@@ -56,7 +56,7 @@ function loginUser(req,res,next) {
 }
 
 function getLocations(req,res,next) {
-  db.any("SELECT * from users_locations WHERE users_id=($1);" ,[req.user.id])
+  db.any("SELECT * from users_locations WHERE users_id=($1) ORDER BY name;;" ,[req.user.id])
     .then ((data) =>{
       console.log("query location", data);
       res.data = data;
@@ -100,8 +100,9 @@ function updateLocation (req, res, next) {
 }
 
 function deleteLocation (req, res, next) {
-  db.none('DELETE FROM users_locations WHERE users_id=($1) and location_id=($2)', [req.user.id, req.body.location_id])
-    .then(() => {
+  db.one('DELETE FROM users_locations WHERE users_id=($1) and location_id=($2) returning name', [req.user.id, req.body.location_id])
+    .then((data) => {
+      res.data = data;
       next();
     })
 }
