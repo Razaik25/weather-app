@@ -1,17 +1,59 @@
 import React, {Component} from "react";
-import {RaisedButton, TextField} from "material-ui";
+import {RaisedButton, TextField, Snackbar} from "material-ui";
 import auth from "../auth";
+import _ from "lodash";
 
 class Login extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      error: false
+      error: false,
+      snackbar: false,
+      emailError: "",
+      passwordError: "",
+      isDirty: true
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.validateEmail = this.validateEmail.bind(this);
+    this.validatePassword = this.validatePassword.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);
     console.log("%c Login Component -> Init ", "background: red; color: white");
   }
 
+  handleRequestClose() {
+    this.setState({
+      snackbar: false
+    });
+  }
+
+  validateEmail(event) {
+    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    if (reg.test(event.target.value)) {
+      this.setState({
+        emailError: "",
+        isDirty: false
+      });
+    } else {
+      this.setState({
+        emailError: "Not a valid email",
+        isDirty: true
+      });
+    }
+  }
+
+  validatePassword(event) {
+    if (_.isEmpty(event.target.value)) {
+      this.setState({
+        passwordError: "This field cannot be blank",
+        isDirty: true
+      });
+    } else {
+      this.setState({
+        passwordError: "",
+        isDirty: false
+      });
+    }
+  }
 
   handleSubmit(event) {
     event.preventDefault();
@@ -19,7 +61,11 @@ class Login extends Component {
     const pass = this.refs.pass.getValue();
     auth.login(email, pass, (loggedIn) => {
       if (!loggedIn)
-        return this.setState({error: true});
+        return this.setState({
+          error: true,
+          snackbar: true,
+          snackbarMsg: "Email/Password do not match"
+        });
 
       const {location} = this.props;
 
@@ -32,33 +78,45 @@ class Login extends Component {
   }
 
   render() {
-    // have to add validations here
     console.log("%c Login Component -> Render ", "background: black; color: pink");
     return (
-      <div className="fullwidth backgroundimage fullheight columnflexcontainer ">
-        <div className="Wrap">
-          <div className="cardstyles">
-            <div action="javascript:" className="inlineflexcontainer fullwidth AdjustPad" onSubmit={this.submit}>
-              <div className="padd ">
+      <div className="fullWidth backgroundImage fullHeight columnflexcontainer ">
+        <div className="wrap">
+          <div className="cardStyles">
+            <div className="inlineflexcontainer fullWidth addPadding">
+              <div className="textFieldStyles">
                 <TextField
+                  floatingLabelText="Email"
                   ref="email"
-                  errorText={null}
+                  errorText={this.state.emailError}
+                  onChange={this.validateEmail}
                   fullWidth={true}
-                  hintText="Email"
                 />
               </div>
-              <div className="padd ">
+              <div className="textFieldStyles">
                 <TextField
+                  floatingLabelText="Password"
                   ref="pass"
-                  errorText={null}
+                  errorText={this.state.passwordError}
+                  onChange={this.validatePassword}
                   fullWidth={true}
                   type="password"
-                  hintText="Password"
                 />
               </div>
-              <div className="flexend  padd">
-                <RaisedButton onClick={this.handleSubmit}>Sign In</RaisedButton>
+              <div className="flexEnd  textFieldStyles">
+                <RaisedButton
+                  label="Sign In"
+                  primary={true}
+                  disabled={this.state.isDirty}
+                  onTouchTap={this.handleSubmit}
+                />
               </div>
+              <Snackbar
+                open={this.state.snackbar}
+                message={this.state.snackbarMsg}
+                autoHideDuration={3000}
+                onRequestClose={this.handleRequestClose}
+              />
             </div>
           </div>
         </div>

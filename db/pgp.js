@@ -56,9 +56,8 @@ function loginUser(req,res,next) {
 }
 
 function getLocations(req,res,next) {
-  db.any("SELECT * from users_locations WHERE users_id=($1) ORDER BY name;;" ,[req.user.id])
+  db.any("SELECT * from users_locations WHERE users_id=($1);" ,[req.user.id])
     .then ((data) =>{
-      console.log("query location", data);
       res.data = data;
       next();
     })
@@ -83,7 +82,7 @@ function createLocation (req, res, next) {
 }
 
 function updateLocation (req, res, next) {
-  db.many(`UPDATE location SET weather_desc=($1), temp=($2), temp_max=($3), temp_min=($4), wind=($5), humidity=($6), clouds=($7), pressure=($8), unix_timestamp=($9), icon=($10)
+  db.many(`UPDATE users_locations SET weather_desc=($1), temp=($2), temp_max=($3), temp_min=($4), wind=($5), humidity=($6), clouds=($7), pressure=($8), unix_timestamp=($9), icon=($10)
     WHERE users_id=($11) and location_id=($12) returning weather_desc, temp,
     temp_max, temp_min,wind,humidity,clouds,pressure,unix_timestamp, icon`,
     [req.body.weather_desc , req.body.temp, req.body.temp_max,
@@ -94,7 +93,7 @@ function updateLocation (req, res, next) {
       next();
     })
     .catch((error) => {
-      res.data = 'error';
+      console.log("error in updating locations", error);
       next();
     })
 }

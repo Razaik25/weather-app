@@ -40,6 +40,8 @@ class Home extends Component {
     this.handleUpdateInput = this.handleUpdateInput.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
     this.handleSaveLocation = this.handleSaveLocation.bind(this);
+    this.checkForUpdates = this.checkForUpdates.bind(this);
+    this.handleClearSearch = this.handleClearSearch.bind(this);
     console.log("%c Home Component -> Init ", "background: red; color: white");
   }
 
@@ -102,6 +104,12 @@ class Home extends Component {
     this.getLocations();
   }
 
+  handleClearSearch() {
+    this.setState({
+      searchResult: null
+    });
+  }
+
   renderLocations(locations, type) {
     let self = this;
     return locations.map(function (location) {
@@ -128,8 +136,15 @@ class Home extends Component {
             <FlatButton
               label={type}
               primary={true}
-              onTouchTap={type === "Save"? () => self.handleSaveLocation(): () => self.handleDeleteLocation(location.location_id)}
+              onTouchTap={type === "Save" ? () => self.handleSaveLocation() : () => self.handleDeleteLocation(location.location_id)}
             />
+            {
+              type === "Save" ?  <FlatButton
+                label="Clear"
+                primary={true}
+                onTouchTap={self.handleClearSearch}
+              />: ""
+            }
           </CardActions>
         </Card>
       </div>;
@@ -137,7 +152,6 @@ class Home extends Component {
   }
 
   getLocations() {
-    let self = this;
     axios({
       method: 'get',
       url: '/weatherApp/getlocations',
@@ -151,6 +165,49 @@ class Home extends Component {
       .catch(function (error) {
         console.error(error);
       }.bind(this));
+  }
+
+  checkForUpdates() {
+    let self = this;
+    (this.state.savedLocations || []).map(function (location) {
+    axios({
+        method: 'get',
+        url: `/weatherApp?location=${location.name}`,
+        headers: {'Authorization': `Bearer ${auth.getToken()}`},
+      })
+        .then(function (response) {
+          if (location.location_id === response.data.id && location.unix_timestamp !== response.data.dt) {
+            axios({
+              method: 'put',
+              url: '/weatherApp/updatelocation',
+              headers: {'Authorization': `Bearer ${auth.getToken()}`},
+              data: {
+                weather_desc: response.data.weather[0].description,
+                temp: response.data.main.temp,
+                temp_max: response.data.main.temp_max,
+                temp_min: response.data.main.temp_min,
+                wind: response.data.wind.speed,
+                humidity: response.data.main.humidity,
+                clouds: response.data.clouds.all,
+                pressure: response.data.main.pressure,
+                unix_timestamp: response.data.dt,
+                icon: response.data.weather[0].icon,
+                location_id: response.data.id
+              }
+            })
+              .then(function (response) {
+                console.log("test data updated at the backend", response);
+                self.getLocations();
+              })
+              .catch(function (error) {
+                console.error("error in updating locations",error);
+              });
+          }
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    });
   }
 
   handleUpdateInput(event) {
@@ -167,7 +224,7 @@ class Home extends Component {
     })
       .then(function (response) {
         this.setState({
-          searchResult:processSearchResponse([response.data]),
+          searchResult: processSearchResponse([response.data]),
           searchQuery: ""
         });
       }.bind(this))
@@ -197,6 +254,11 @@ class Home extends Component {
           {this.state.searchResult !== null ? this.renderLocations(this.state.searchResult, "Save") : ""}
           {this.state.savedLocations !== null ? this.renderLocations(this.state.savedLocations, "Delete") : ""}
         </div>
+        <FlatButton
+          label="Update locations"
+          primary={true}
+          onTouchTap={this.checkForUpdates}
+        />
       </div>
     );
   }
