@@ -16,7 +16,6 @@ module.exports = {
         if (cb) cb(true);
         this.onChange(true)
       } else {
-        console.log("hfks",res);
         if (cb) cb(false);
         this.onChange(false)
       }

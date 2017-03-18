@@ -1,33 +1,51 @@
+body {
+    background: #fff0e6;
+    font-family: "Verdana";
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    margin: 10px;
+}
+
 .container {
     position: relative;
     text-align: center;
 }
-.cardContainer{
+
+.cardContainer {
     width: 30%;
     margin: 10px;
 }
-.capitalize{
+
+.capitalize {
     text-transform: capitalize;
 }
-.columnflexcontainer,.inlineflexcontainer{
+
+.columnflexcontainer, .inlineflexcontainer {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
 }
-.columnflexcontainer{
-    flex-direction:column;
+
+.columnflexcontainer {
+    flex-direction: column;
     justify-content: center;
 }
+
 .inlineflexcontainer {
     width: 50%;
-    flex-direction:row ;
+    flex-direction: row;
     align-items: center;
-    justify-content:center;
+    justify-content: center;
 }
-.inlineflexcontainer,.flexEnd{
+
+.inlineflexcontainer, .flexEnd {
     display: inline-flex;
 }
-.cardStyles{
+
+.cardStyles {
     color: rgba(0, 0, 0, 0.870588);
     background-color: rgb(255, 255, 255);
     transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
@@ -39,30 +57,49 @@
     z-index: 1;
     display: block;
 }
-.fullWidth,.flexEnd{
+
+.fullWidth, .flexEnd {
     width: 100%;
 }
-.textFieldStyles{
+
+.textFieldStyles {
     padding: 10px 20px;
     width: 85%;
 }
-.wrap{
-    width: 38%;
-    margin:0 auto;
 
+.wrap {
+    width: 38%;
+    margin: 0 auto;
 }
-.addPadding{
+
+.addPadding {
     padding: 18px 1px;
 }
-.backgroundImage{
+
+.backgroundImage {
     background: url("./background.jpg") center no-repeat;
 }
-.fullHeight{
-    height: 100vh;
+
+.adjustHeight {
+    height: 70vh;
 }
-.flexEnd{
+
+.flexEnd {
     justify-content: flex-end;
 }
+
 .center {
     text-align: center;
 }
+
+.intro {
+    font-size: 140%;
+    text-align: center;
+    line-height: 2em;
+    color: #888;
+}
+
+.searchButton {
+    margin-left: 2%;
+}
+

@@ -21,7 +21,7 @@ class SignUp extends Component {
 
   validateEmail(event) {
     var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-    if(reg.test(event.target.value)) {
+    if (reg.test(event.target.value)) {
       this.setState({
         emailError: "",
         isDirty: false
@@ -35,7 +35,7 @@ class SignUp extends Component {
   }
 
   validateName(event) {
-    if(_.isEmpty(event.target.value)){
+    if (_.isEmpty(event.target.value)) {
       this.setState({
         userNameError: "This field cannot be blank",
         isDirty: true
@@ -49,7 +49,7 @@ class SignUp extends Component {
   }
 
   validatePassword(event) {
-    if(_.isEmpty(event.target.value)){
+    if (_.isEmpty(event.target.value)) {
       this.setState({
         passwordError: "This field cannot be blank",
         isDirty: true
@@ -87,46 +87,44 @@ class SignUp extends Component {
   render() {
     console.log("%c SignUp Component -> Render ", "background: black; color: pink", this.state);
     return (
-      <div className="fullWidth backgroundImage fullHeight columnflexcontainer ">
-        <div className="wrap">
-          <div className="cardStyles">
-            <div className="inlineflexcontainer fullWidth addPadding">
-              <div className="textFieldStyles">
-                <TextField
-                  fullWidth ={true}
-                  floatingLabelText="Username"
-                  ref="username"
-                  onChange={this.validateName}
-                  errorText={this.state.userNameError}
-                />
-              </div>
-              <div className="textFieldStyles">
-                <TextField
-                  fullWidth ={true}
-                  floatingLabelText="Email"
-                  ref="email"
-                  onChange={this.validateEmail}
-                  errorText={this.state.emailError}
-                />
-              </div>
-              <div className="textFieldStyles">
-                <TextField
-                  fullWidth ={true}
-                  floatingLabelText="Password"
-                  ref="pass"
-                  type="password"
-                  onChange={this.validatePassword}
-                  errorText={this.state.passwordError}
-                />
-              </div>
-              <div className="flexEnd textFieldStyles">
-                <RaisedButton
-                  label="Sign Up"
-                  primary={true}
-                  disabled={this.state.isDirty}
-                  onTouchTap={this.handleSubmit}
-                />
-              </div>
+      <div className="fullWidth adjustHeight columnflexcontainer ">
+        <div className="cardStyles">
+          <div className="inlineflexcontainer fullWidth addPadding">
+            <div className="textFieldStyles">
+              <TextField
+                fullWidth={true}
+                floatingLabelText="Username"
+                ref="username"
+                onChange={this.validateName}
+                errorText={this.state.userNameError}
+              />
+            </div>
+            <div className="textFieldStyles">
+              <TextField
+                fullWidth={true}
+                floatingLabelText="Email"
+                ref="email"
+                onChange={this.validateEmail}
+                errorText={this.state.emailError}
+              />
+            </div>
+            <div className="textFieldStyles">
+              <TextField
+                fullWidth={true}
+                floatingLabelText="Password"
+                ref="pass"
+                type="password"
+                onChange={this.validatePassword}
+                errorText={this.state.passwordError}
+              />
+            </div>
+            <div className="flexEnd textFieldStyles">
+              <RaisedButton
+                label="Sign Up"
+                primary={true}
+                disabled={this.state.isDirty}
+                onTouchTap={this.handleSubmit}
+              />
             </div>
           </div>
         </div>

@@ -1,9 +1,10 @@
 import React, {Component} from "react";
-import {TextField, FlatButton, Card, CardActions, CardHeader, CardTitle, CardText, Snackbar} from "material-ui";
+import {TextField, FlatButton, Card, CardActions, CardHeader, CardTitle, CardText, Snackbar, IconButton, RaisedButton} from "material-ui";
 import axios from "axios";
 import auth from "../auth";
 import _ from "lodash";
 import moment from "moment";
+import Update from "material-ui/svg-icons/action/update";
 
 function processSearchResponse(data) {
   let dataToReturn = [];
@@ -111,6 +112,10 @@ class Home extends Component {
       }.bind(this))
       .catch(function (error) {
         console.error(error);
+        this.setState({
+          snackbar: true,
+          snackbarMsg: `Oops, delete unsuccessful. Please try again`
+        });
       }.bind(this));
   }
 
@@ -149,11 +154,11 @@ class Home extends Component {
               onTouchTap={type === "Save" ? () => self.handleSaveLocation() : () => self.handleDeleteLocation(location.location_id)}
             />
             {
-              type === "Save" ?  <FlatButton
+              type === "Save" ? <FlatButton
                 label="Clear"
                 primary={true}
                 onTouchTap={self.handleClearSearch}
-              />: ""
+              /> : ""
             }
           </CardActions>
         </Card>
@@ -180,7 +185,7 @@ class Home extends Component {
   checkForUpdates() {
     let self = this;
     (this.state.savedLocations || []).map(function (location) {
-    axios({
+      axios({
         method: 'get',
         url: `/weatherApp?location=${location.name}`,
         headers: {'Authorization': `Bearer ${auth.getToken()}`},
@@ -214,7 +219,7 @@ class Home extends Component {
                 self.getLocations();
               })
               .catch(function (error) {
-                console.error("error in updating locations",error);
+                console.error("error in updating locations", error);
               });
           } else {
             self.setState({
@@ -235,14 +240,14 @@ class Home extends Component {
 
   validateSearch() {
     let sameLocation;
-    sameLocation =  this.state.savedLocations.some(function (location) {
+    sameLocation = this.state.savedLocations.some(function (location) {
       return location.name.toUpperCase() === this.state.searchQuery.toUpperCase();
     }.bind(this));
     return sameLocation;
   }
 
   handleSearch() {
-    if(!this.validateSearch()) {
+    if (!this.validateSearch()) {
       axios({
         method: 'get',
         url: `/weatherApp?location=${this.state.searchQuery}`,
@@ -255,8 +260,7 @@ class Home extends Component {
           });
         }.bind(this))
         .catch(function (error) {
-          console.log("get for search",error);
-          if(error.response.data.message === "City not Found") {
+          if (error.response.data.message === "City not Found") {
             this.setState({
               snackbar: true,
               snackbarMsg: response.data.message,
@@ -288,21 +292,23 @@ class Home extends Component {
             value={this.state.searchQuery}
             onChange={this.handleUpdateInput}
           />
-          <FlatButton
+          <RaisedButton
+            className="searchButton"
             label="Search"
             primary={true}
             onTouchTap={this.handleSearch}
           />
+          <IconButton
+            tooltip="Update locations"
+            onTouchTap={this.checkForUpdates}
+          >
+            <Update/>
+          </IconButton>
         </div>
         <div className="inlineflexcontainer">
           {this.state.searchResult !== null ? this.renderLocations(this.state.searchResult, "Save") : ""}
           {this.state.savedLocations !== null ? this.renderLocations(this.state.savedLocations, "Delete") : ""}
         </div>
-        <FlatButton
-          label="Update locations"
-          primary={true}
-          onTouchTap={this.checkForUpdates}
-        />
         <Snackbar
           className="center"
           open={this.state.snackbar}

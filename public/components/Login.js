@@ -60,7 +60,7 @@ class Login extends Component {
     event.preventDefault();
     const email = this.refs.email.getValue();
     const pass = this.refs.pass.getValue();
-    auth.login(email, pass,(loggedIn) => {
+    auth.login(email, pass, (loggedIn) => {
       if (!loggedIn)
         return this.setState({
           error: true,
@@ -81,45 +81,43 @@ class Login extends Component {
   render() {
     console.log("%c Login Component -> Render ", "background: black; color: pink");
     return (
-      <div className="fullWidth backgroundImage fullHeight columnflexcontainer ">
-        <div className="wrap">
-          <div className="cardStyles">
-            <div className="inlineflexcontainer fullWidth addPadding">
-              <div className="textFieldStyles">
-                <TextField
-                  floatingLabelText="Email"
-                  ref="email"
-                  errorText={this.state.emailError}
-                  onChange={this.validateEmail}
-                  fullWidth={true}
-                />
-              </div>
-              <div className="textFieldStyles">
-                <TextField
-                  floatingLabelText="Password"
-                  ref="pass"
-                  errorText={this.state.passwordError}
-                  onChange={this.validatePassword}
-                  fullWidth={true}
-                  type="password"
-                />
-              </div>
-              <div className="flexEnd  textFieldStyles">
-                <RaisedButton
-                  label="Sign In"
-                  primary={true}
-                  disabled={this.state.isDirty}
-                  onTouchTap={this.handleSubmit}
-                />
-              </div>
-              <Snackbar
-                className="center"
-                open={this.state.snackbar}
-                message={this.state.snackbarMsg}
-                autoHideDuration={3000}
-                onRequestClose={this.handleRequestClose}
+      <div className="fullWidth adjustHeight columnflexcontainer ">
+        <div className="cardStyles">
+          <div className="inlineflexcontainer fullWidth">
+            <div className="textFieldStyles">
+              <TextField
+                floatingLabelText="Email"
+                ref="email"
+                errorText={this.state.emailError}
+                onChange={this.validateEmail}
+                fullWidth={true}
               />
             </div>
+            <div className="textFieldStyles">
+              <TextField
+                floatingLabelText="Password"
+                ref="pass"
+                errorText={this.state.passwordError}
+                onChange={this.validatePassword}
+                fullWidth={true}
+                type="password"
+              />
+            </div>
+            <div className="flexEnd  textFieldStyles">
+              <RaisedButton
+                label="Sign In"
+                primary={true}
+                disabled={this.state.isDirty}
+                onTouchTap={this.handleSubmit}
+              />
+            </div>
+            <Snackbar
+              className="center"
+              open={this.state.snackbar}
+              message={this.state.snackbarMsg}
+              autoHideDuration={3000}
+              onRequestClose={this.handleRequestClose}
+            />
           </div>
         </div>
       </div>
