@@ -7,7 +7,9 @@ const expressJWT = require('express-jwt');
 const jwt = require('jsonwebtoken');
 
 users.post('/signup', db.createUser, (req, res)=> {
-  res.status(201).json({success: true, data:'success'});
+  res.send(res.data);
+  // console.log("fdsfd", res.data.detail);
+  // res.status(201).json({success: true, data:'success'});
 });
 
 users.post('/login', db.loginUser, (req, res) => {

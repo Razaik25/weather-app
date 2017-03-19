@@ -1,5 +1,16 @@
 import React, {Component} from "react";
-import {TextField, FlatButton, Card, CardActions, CardHeader, CardTitle, CardText, Snackbar, IconButton, RaisedButton} from "material-ui";
+import {
+  TextField,
+  FlatButton,
+  Card,
+  CardActions,
+  CardHeader,
+  CardTitle,
+  CardText,
+  Snackbar,
+  IconButton,
+  RaisedButton
+} from "material-ui";
 import axios from "axios";
 import auth from "../auth";
 import _ from "lodash";
@@ -239,6 +250,7 @@ class Home extends Component {
   }
 
   validateSearch() {
+    // more stuff
     let sameLocation;
     sameLocation = this.state.savedLocations.some(function (location) {
       return location.name.toUpperCase() === this.state.searchQuery.toUpperCase();
@@ -263,7 +275,7 @@ class Home extends Component {
           if (error.response.data.message === "City not Found") {
             this.setState({
               snackbar: true,
-              snackbarMsg: response.data.message,
+              snackbarMsg: error.response.data.message,
               searchQuery: ""
             });
           } else {

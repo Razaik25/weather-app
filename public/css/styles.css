@@ -2,49 +2,40 @@ body {
     background: #fff0e6;
     font-family: "Verdana";
 }
-
 a {
     color: white;
     text-decoration: none;
     margin: 10px;
 }
-
 .container {
     position: relative;
     text-align: center;
 }
-
 .cardContainer {
-    width: 30%;
+    width: 31%;
     margin: 10px;
 }
-
 .capitalize {
     text-transform: capitalize;
 }
-
 .columnflexcontainer, .inlineflexcontainer {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
 }
-
 .columnflexcontainer {
     flex-direction: column;
     justify-content: center;
 }
-
 .inlineflexcontainer {
-    width: 50%;
+    width: 60%;
     flex-direction: row;
     align-items: center;
     justify-content: center;
 }
-
 .inlineflexcontainer, .flexEnd {
     display: inline-flex;
 }
-
 .cardStyles {
     color: rgba(0, 0, 0, 0.870588);
     background-color: rgb(255, 255, 255);
@@ -57,48 +48,38 @@ a {
     z-index: 1;
     display: block;
 }
-
 .fullWidth, .flexEnd {
     width: 100%;
 }
-
 .textFieldStyles {
     padding: 10px 20px;
     width: 85%;
 }
-
 .wrap {
     width: 38%;
     margin: 0 auto;
 }
-
 .addPadding {
     padding: 18px 1px;
 }
-
-.backgroundImage {
-    background: url("./background.jpg") center no-repeat;
-}
-
 .adjustHeight {
     height: 70vh;
 }
-
 .flexEnd {
     justify-content: flex-end;
 }
-
 .center {
     text-align: center;
 }
-
+.appBarLinks {
+    margin:10px;
+}
 .intro {
     font-size: 140%;
     text-align: center;
     line-height: 2em;
     color: #888;
 }
-
 .searchButton {
     margin-left: 2%;
 }

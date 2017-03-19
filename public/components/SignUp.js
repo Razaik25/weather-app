@@ -1,35 +1,49 @@
 import React, {Component} from "react";
 import axios from "axios";
-import {RaisedButton, TextField} from "material-ui";
+import {RaisedButton, TextField, Snackbar} from "material-ui";
 import _ from "lodash";
 
+function isDisabled(str) {
+  if(str) {
+    return true;
+  }
+  return false;
+}
 class SignUp extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      userNameError: "",
-      emailError: "",
-      passwordError: "",
-      isDirty: true
+      userNameError: null,
+      emailError: null,
+      passwordError: null,
+      snackbar: false,
+      snackbarMsg: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
     this.validateName = this.validateName.bind(this);
     this.validatePassword = this.validatePassword.bind(this);
+    this.validateData = this.validateData.bind(this);
+    this.handleRequestClose = this.handleRequestClose.bind(this);
     console.log("%c SignUp Component -> Init ", "background: red; color: white");
   }
 
+
+  handleRequestClose() {
+    this.setState({
+      snackbar: false
+    });
+  }
+
   validateEmail(event) {
-    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    var reg = /^[a-z0-9][_,;:~!*$()=a-z'0-9-\.\+]*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/;
     if (reg.test(event.target.value)) {
       this.setState({
         emailError: "",
-        isDirty: false
       });
     } else {
       this.setState({
         emailError: "Not a valid email",
-        isDirty: true
       });
     }
   }
@@ -37,13 +51,11 @@ class SignUp extends Component {
   validateName(event) {
     if (_.isEmpty(event.target.value)) {
       this.setState({
-        userNameError: "This field cannot be blank",
-        isDirty: true
+        userNameError: "User Name cannot be blank",
       });
     } else {
       this.setState({
         userNameError: "",
-        isDirty: false
       });
     }
   }
@@ -51,14 +63,18 @@ class SignUp extends Component {
   validatePassword(event) {
     if (_.isEmpty(event.target.value)) {
       this.setState({
-        passwordError: "This field cannot be blank",
-        isDirty: true
+        passwordError:"Password cannot be blank",
       });
     } else {
       this.setState({
         passwordError: "",
-        isDirty: false
       });
+    }
+  }
+
+  validateData() {
+    if(_.isEmpty(this.refs.email.getValue()) || _.isEmpty(this.refs.pass.getValue()) || _.isEmpty(this.refs.username.getValue())) {
+      return true;
     }
   }
 
@@ -66,26 +82,35 @@ class SignUp extends Component {
     const email = this.refs.email.getValue();
     const pass = this.refs.pass.getValue();
     const username = this.refs.username.getValue();
-    axios.post('/users/signup', {email: email, password: pass, username: username})
-      .then((res) => {
-        console.info('sign up successfull', res);
-      })
-      .catch((err) => {
-        console.info('error in signing up', err);
-      });
+    if(!this.validateData()) {
+      axios.post('/users/signup', {email: email, password: pass, username: username})
+        .then((res) => {
+          console.info('sign up successfull', res);
+          const {location} = this.props;
 
-    const {location} = this.props;
-
-    if (location.state && location.state.nextPathname) {
-      this.context.router.replace(location.state.nextPathname);
+          if (location.state && location.state.nextPathname) {
+            this.context.router.replace(location.state.nextPathname);
+          } else {
+            this.context.router.replace('/home');
+          }
+        })
+        .catch((err) => {
+          console.info('error in signing up', err.response);
+          this.setState({
+            snackbarMsg: err.response.data.data,
+            snackbar: true
+          })
+        });
     } else {
-      this.context.router.replace('/');
+      this.setState({
+        snackbarMsg: "Please fill all the fields",
+        snackbar: true
+      })
     }
-
   }
 
   render() {
-    console.log("%c SignUp Component -> Render ", "background: black; color: pink", this.state);
+    console.log("%c SignUp Component -> Render ", "background: black; color: pink");
     return (
       <div className="fullWidth adjustHeight columnflexcontainer ">
         <div className="cardStyles">
@@ -122,10 +147,17 @@ class SignUp extends Component {
               <RaisedButton
                 label="Sign Up"
                 primary={true}
-                disabled={this.state.isDirty}
+                disabled={isDisabled(this.state.userNameError) || isDisabled(this.state.emailError) || isDisabled(this.state.passwordError)}
                 onTouchTap={this.handleSubmit}
               />
             </div>
+            <Snackbar
+              className="center"
+              open={this.state.snackbar}
+              message={this.state.snackbarMsg}
+              autoHideDuration={3000}
+              onRequestClose={this.handleRequestClose}
+            />
           </div>
         </div>
       </div>

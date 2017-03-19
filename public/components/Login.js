@@ -3,6 +3,13 @@ import {RaisedButton, TextField, Snackbar} from "material-ui";
 import auth from "../auth";
 import _ from "lodash";
 
+function isDisabled(str) {
+  if(str) {
+    return true;
+  }
+  return false;
+}
+
 class Login extends Component {
   constructor(props, context) {
     super(props, context);
@@ -10,9 +17,8 @@ class Login extends Component {
       error: false,
       snackbar: false,
       snackbarMsg: "",
-      emailError: "",
-      passwordError: "",
-      isDirty: true
+      emailError: null,
+      passwordError: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
@@ -28,16 +34,14 @@ class Login extends Component {
   }
 
   validateEmail(event) {
-    var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    var reg = /^[a-z0-9][_,;:~!*$()=a-z'0-9-\.\+]*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/;
     if (reg.test(event.target.value)) {
       this.setState({
         emailError: "",
-        isDirty: false
       });
     } else {
       this.setState({
         emailError: "Not a valid email",
-        isDirty: true
       });
     }
   }
@@ -46,44 +50,43 @@ class Login extends Component {
     if (_.isEmpty(event.target.value)) {
       this.setState({
         passwordError: "This field cannot be blank",
-        isDirty: true
       });
     } else {
       this.setState({
         passwordError: "",
-        isDirty: false
       });
     }
   }
+
 
   handleSubmit(event) {
     event.preventDefault();
     const email = this.refs.email.getValue();
     const pass = this.refs.pass.getValue();
-    auth.login(email, pass, (loggedIn) => {
-      if (!loggedIn)
-        return this.setState({
-          error: true,
-          snackbar: true,
-          snackbarMsg: "Email/Password do not match"
-        });
+      auth.login(email, pass, (loggedIn) => {
+        if (!loggedIn)
+          return this.setState({
+            error: true,
+            snackbar: true,
+            snackbarMsg: "Email/Password do not match"
+          });
 
-      const {location} = this.props;
+        const {location} = this.props;
 
-      if (location.state && location.state.nextPathname) {
-        this.context.router.replace(location.state.nextPathname);
-      } else {
-        this.context.router.replace('/home');
-      }
-    })
-  }
+        if (location.state && location.state.nextPathname) {
+          this.context.router.replace(location.state.nextPathname);
+        } else {
+          this.context.router.replace('/home');
+        }
+      })
+    }
 
   render() {
-    console.log("%c Login Component -> Render ", "background: black; color: pink");
+    console.log("%c Login Component -> Render ", "background: black; color: pink", this.state);
     return (
       <div className="fullWidth adjustHeight columnflexcontainer ">
         <div className="cardStyles">
-          <div className="inlineflexcontainer fullWidth">
+          <div className="inlineflexcontainer fullWidth addPadding">
             <div className="textFieldStyles">
               <TextField
                 floatingLabelText="Email"
@@ -107,7 +110,7 @@ class Login extends Component {
               <RaisedButton
                 label="Sign In"
                 primary={true}
-                disabled={this.state.isDirty}
+                disabled={ isDisabled(this.state.emailError) || isDisabled(this.state.passwordError)}
                 onTouchTap={this.handleSubmit}
               />
             </div>

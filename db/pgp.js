@@ -32,7 +32,14 @@ function createUser(req,res,next) {
       })
       .catch((err) => {
         res.data = err;
+        if(err.detail.includes("email")) {
+          res.status(401).json({data:"This email is already associated with another username"});
+        }
+        if(err.detail.includes("usernam")) {
+          res.status(401).json({data:"This username is already registered"});
+        }
         console.log('error signing up', err);
+        next();
       })
   }
 }

@@ -45,17 +45,6 @@ export default class App extends Component {
 
   render() {
     console.log("%c App Component -> Render ", "background: black; color: pink", this.state);
-    // <div >
-    //   <h2>Welcome to Weather Bug</h2>
-    //   <ul>
-    //     <li>
-    //       {this.state.loggedIn ? ( <Link to="/logout">Log out</Link> )
-    //         : ( <Link to="/login">Log In</Link> )}
-    //     </li>
-    //     <li><Link to="/signup">Sign Up</Link></li>
-    //   </ul>
-    //   {this.props.children || <p>You are {!this.state.loggedIn && 'not'} logged in.</p>}
-    // </div>
     return (
       <MuiThemeProvider>
         <div>
@@ -65,7 +54,7 @@ export default class App extends Component {
                 style={{backgroundColor: "#7E57C2"}}
                 title="Weather Bug"
                 showMenuIconButton={false}
-                iconElementRight={<FlatButton><Link to="/logout">Logout</Link></FlatButton>}
+                iconElementRight={<div className="appBarLinks"><Link to="/logout">Logout</Link></div>}
               />
               {this.props.children || <p>You are {!this.state.loggedIn && 'not'} logged in.</p>}
             </div> :
@@ -76,14 +65,14 @@ export default class App extends Component {
                 showMenuIconButton={false}
                 iconElementRight={
                   <div className="appBarLinks">
-                    <FlatButton><Link to="/login">Login</Link></FlatButton>
-                    <FlatButton><Link to="/signup">Sign Up</Link></FlatButton>
+                    <Link to="/login">Login</Link>
+                    <Link to="/signup">Sign Up</Link>
                   </div>
                 }
               />
               <div className="intro">
                 Welcome to Weather Bug
-                <p>Sign up for a free account to track your saved locations real-time</p>
+                <p>Sign up for a free account to track the weather of your saved locations real-time</p>
               </div>
               {this.props.children}
             </div>
