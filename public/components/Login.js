@@ -86,7 +86,7 @@ class Login extends Component {
     return (
       <div className="fullWidth adjustHeight columnflexcontainer ">
         <div className="cardStyles">
-          <form className="inlineflexcontainer fullWidth addPadding" onSubmit={this.handleSubmit}>
+          <div className="inlineflexcontainer fullWidth addPadding" >
             <div className="textFieldStyles">
               <TextField
                 floatingLabelText="Email"
@@ -113,9 +113,9 @@ class Login extends Component {
             <div className="flexEnd  textFieldStyles">
               <RaisedButton
                 label="Sign In"
-                type="submit"
                 backgroundColor="#7E57C2"
                 labelColor="white"
+                onTouchTap={this.handleSubmit}
                 disabled={ isDisabled(this.state.emailError) || isDisabled(this.state.passwordError)}
               />
             </div>
@@ -126,7 +126,7 @@ class Login extends Component {
               autoHideDuration={3000}
               onRequestClose={this.handleRequestClose}
             />
-          </form>
+          </div>
         </div>
       </div>
     );

@@ -114,7 +114,7 @@ class SignUp extends Component {
     return (
       <div className="fullWidth adjustHeight columnflexcontainer ">
         <div className="cardStyles">
-          <form className="inlineflexcontainer fullWidth addPadding" onSubmit={this.handleSubmit}>
+          <div className="inlineflexcontainer fullWidth addPadding">
             <div className="textFieldStyles">
               <TextField
                 fullWidth={true}
@@ -155,6 +155,7 @@ class SignUp extends Component {
                 type="submit"
                 backgroundColor="#7E57C2"
                 labelColor="white"
+                onTouchTap={this.handleSubmit}
                 disabled={isDisabled(this.state.userNameError) || isDisabled(this.state.emailError) || isDisabled(this.state.passwordError)}
               />
             </div>
@@ -165,7 +166,7 @@ class SignUp extends Component {
               autoHideDuration={3000}
               onRequestClose={this.handleRequestClose}
             />
-          </form>
+          </div>
         </div>
       </div>
     );
