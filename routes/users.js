@@ -8,12 +8,10 @@ const jwt = require('jsonwebtoken');
 
 users.post('/signup', db.createUser, (req, res)=> {
   res.send(res.data);
-  // console.log("fdsfd", res.data.detail);
-  // res.status(201).json({success: true, data:'success'});
 });
 
 users.post('/login', db.loginUser, (req, res) => {
-  var token = jwt.sign(res.data, secret);
+  let token = jwt.sign(res.data, secret);
   res.json({agent: res.data, token: token });
 });
 

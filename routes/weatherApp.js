@@ -40,9 +40,7 @@ weatherApp.delete('/deletelocation', db.deleteLocation, (req, res) => {
   res.send(res.data);
 });
 
-/*
- remove the hardcode of units
- */
+
 function callOpenWeather(req, res, next) {
   request(`http://api.openweathermap.org/data/2.5/weather?q=${req.query.location}&appid=${API_KEY}&units=metric`, (err, response, body) => {
     result = JSON.parse(body);

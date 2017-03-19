@@ -3,14 +3,21 @@ const dotenv = require('dotenv');
 dotenv.load();
 const bcrypt = require('bcrypt');
 const salt = bcrypt.genSaltSync(10);
-var cn = {
-  host: 'localhost',
-  port: 5432,
-  database: process.env.DB_DATABASE,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS
-};
-var db = pgp(cn);
+
+let cn;
+if (process.env.ENVIRONMENT === 'production') {
+  cn = process.env.DATABASE_URL;
+} else {
+  cn = {
+    host: 'localhost',
+    port: 5432,
+    database: process.env.DB_DATABASE,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS
+  };
+}
+
+let db = pgp(cn);
 
 function createSecure(email,password,username,callback) {
   bcrypt.genSalt(function (err, salt) {
@@ -73,6 +80,7 @@ function getLocations(req,res,next) {
     .catch((err) => {
       res.data = "error";
       console.log('error in getting locations', err);
+      next();
     });
 }
 
@@ -87,6 +95,7 @@ function createLocation (req, res, next) {
     })
     .catch(function(error) {
       console.log(error);
+      next();
     })
 }
 
@@ -111,6 +120,10 @@ function deleteLocation (req, res, next) {
   db.one('DELETE FROM users_locations WHERE users_id=($1) and location_id=($2) returning name', [req.user.id, req.body.location_id])
     .then((data) => {
       res.data = data;
+      next();
+    })
+    .catch((error) => {
+      console.log("error in deleting locations", error);
       next();
     })
 }

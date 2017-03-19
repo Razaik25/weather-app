@@ -1,9 +1,9 @@
-var express = require("express");
-var path = require("path");
-var bodyParser = require('body-parser');
-var db = require('./db/pgp');
+const express = require("express");
+const path = require("path");
+const bodyParser = require('body-parser');
+const db = require('./db/pgp');
 const logger = require('morgan');
-let app = express();
+const app = express();
 const port = process.env.PORT || 3000;
 
 const userRoutes = require('./routes/users');
