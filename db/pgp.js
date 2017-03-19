@@ -16,7 +16,6 @@ if (process.env.ENVIRONMENT === 'production') {
     password: process.env.DB_PASS
   };
 }
-
 let db = pgp(cn);
 
 function createSecure(email,password,username,callback) {
