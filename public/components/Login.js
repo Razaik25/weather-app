@@ -86,13 +86,15 @@ class Login extends Component {
     return (
       <div className="fullWidth adjustHeight columnflexcontainer ">
         <div className="cardStyles">
-          <div className="inlineflexcontainer fullWidth addPadding">
+          <form className="inlineflexcontainer fullWidth addPadding" onSubmit={this.handleSubmit}>
             <div className="textFieldStyles">
               <TextField
                 floatingLabelText="Email"
                 ref="email"
                 errorText={this.state.emailError}
                 onChange={this.validateEmail}
+                floatingLabelStyle={{color: "#7E57C2"}}
+                floatingLabelFocusStyle={{color: "#7E57C2"}}
                 fullWidth={true}
               />
             </div>
@@ -102,6 +104,8 @@ class Login extends Component {
                 ref="pass"
                 errorText={this.state.passwordError}
                 onChange={this.validatePassword}
+                floatingLabelStyle={{color: "#7E57C2"}}
+                floatingLabelFocusStyle={{color: "#7E57C2"}}
                 fullWidth={true}
                 type="password"
               />
@@ -109,9 +113,10 @@ class Login extends Component {
             <div className="flexEnd  textFieldStyles">
               <RaisedButton
                 label="Sign In"
-                primary={true}
+                type="submit"
+                backgroundColor="#7E57C2"
+                labelColor="white"
                 disabled={ isDisabled(this.state.emailError) || isDisabled(this.state.passwordError)}
-                onTouchTap={this.handleSubmit}
               />
             </div>
             <Snackbar
@@ -121,7 +126,7 @@ class Login extends Component {
               autoHideDuration={3000}
               onRequestClose={this.handleRequestClose}
             />
-          </div>
+          </form>
         </div>
       </div>
     );

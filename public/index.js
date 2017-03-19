@@ -72,7 +72,7 @@ export default class App extends Component {
               />
               <div className="intro">
                 Welcome to Weather Bug
-                <p>Sign up for a free account to track the weather of your saved locations real-time</p>
+                <p><Link className="pinkColor" to="/signup">Sign Up</Link>for a free account  or<Link  className="pinkColor" to="/login">Login</Link>to track the weather of your saved locations real-time</p>
               </div>
               {this.props.children}
             </div>

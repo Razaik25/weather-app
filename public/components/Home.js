@@ -150,7 +150,7 @@ class Home extends Component {
           <CardTitle
             className="capitalize"
             title={location.weather_desc}
-            subtitle={`${location.temp}°С`}/>
+            subtitle={`${location.temp}°С  Min: ${location.temp_min}°С Max: ${location.temp_max}°С`}/>
           <CardText>
             Wind: {`${location.wind} m/s`}<br/>
             Humidity: {`${location.humidity}%`}<br/>
@@ -161,13 +161,14 @@ class Home extends Component {
           <CardActions>
             <FlatButton
               label={type}
-              primary={true}
+              labelStyle={{color:"#7E57C2"}}
               onTouchTap={type === "Save" ? () => self.handleSaveLocation() : () => self.handleDeleteLocation(location.location_id)}
             />
             {
               type === "Save" ? <FlatButton
                 label="Clear"
                 primary={true}
+                labelStyle={{color:"#7E57C2"}}
                 onTouchTap={self.handleClearSearch}
               /> : ""
             }
@@ -303,11 +304,14 @@ class Home extends Component {
             floatingLabelText="City Name"
             value={this.state.searchQuery}
             onChange={this.handleUpdateInput}
+            floatingLabelStyle={{color: "#7E57C2"}}
+            floatingLabelFocusStyle={{color: "#7E57C2"}}
           />
           <RaisedButton
             className="searchButton"
             label="Search"
-            primary={true}
+            backgroundColor="#7E57C2"
+            labelColor="white"
             onTouchTap={this.handleSearch}
           />
           <IconButton

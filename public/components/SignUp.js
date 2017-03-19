@@ -114,13 +114,15 @@ class SignUp extends Component {
     return (
       <div className="fullWidth adjustHeight columnflexcontainer ">
         <div className="cardStyles">
-          <div className="inlineflexcontainer fullWidth addPadding">
+          <form className="inlineflexcontainer fullWidth addPadding" onSubmit={this.handleSubmit}>
             <div className="textFieldStyles">
               <TextField
                 fullWidth={true}
                 floatingLabelText="Username"
                 ref="username"
                 onChange={this.validateName}
+                floatingLabelStyle={{color: "#7E57C2"}}
+                floatingLabelFocusStyle={{color: "#7E57C2"}}
                 errorText={this.state.userNameError}
               />
             </div>
@@ -128,6 +130,8 @@ class SignUp extends Component {
               <TextField
                 fullWidth={true}
                 floatingLabelText="Email"
+                floatingLabelStyle={{color: "#7E57C2"}}
+                floatingLabelFocusStyle={{color: "#7E57C2"}}
                 ref="email"
                 onChange={this.validateEmail}
                 errorText={this.state.emailError}
@@ -137,6 +141,8 @@ class SignUp extends Component {
               <TextField
                 fullWidth={true}
                 floatingLabelText="Password"
+                floatingLabelStyle={{color: "#7E57C2"}}
+                floatingLabelFocusStyle={{color: "#7E57C2"}}
                 ref="pass"
                 type="password"
                 onChange={this.validatePassword}
@@ -146,9 +152,10 @@ class SignUp extends Component {
             <div className="flexEnd textFieldStyles">
               <RaisedButton
                 label="Sign Up"
-                primary={true}
+                type="submit"
+                backgroundColor="#7E57C2"
+                labelColor="white"
                 disabled={isDisabled(this.state.userNameError) || isDisabled(this.state.emailError) || isDisabled(this.state.passwordError)}
-                onTouchTap={this.handleSubmit}
               />
             </div>
             <Snackbar
@@ -158,7 +165,7 @@ class SignUp extends Component {
               autoHideDuration={3000}
               onRequestClose={this.handleRequestClose}
             />
-          </div>
+          </form>
         </div>
       </div>
     );
