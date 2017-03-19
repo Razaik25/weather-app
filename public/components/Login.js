@@ -3,18 +3,11 @@ import {RaisedButton, TextField, Snackbar} from "material-ui";
 import auth from "../auth";
 import _ from "lodash";
 
-function isDisabled(str) {
-  if(str) {
-    return true;
-  }
-  return false;
-}
 
 class Login extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      error: false,
       snackbar: false,
       snackbarMsg: "",
       emailError: null,
@@ -27,12 +20,18 @@ class Login extends Component {
     console.log("%c Login Component -> Init ", "background: red; color: white");
   }
 
+  /*
+   sets the state for closing the alert message(snackbar)
+   */
   handleRequestClose() {
     this.setState({
       snackbar: false
     });
   }
 
+  /*
+   validates if the value is a valid email and sets the state accordingly
+   */
   validateEmail(event) {
     var reg = /^[a-z0-9][_,;:~!*$()=a-z'0-9-\.\+]*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/;
     if (reg.test(event.target.value)) {
@@ -46,6 +45,9 @@ class Login extends Component {
     }
   }
 
+  /*
+   validates if the password is blank and sets the state accordingly
+   */
   validatePassword(event) {
     if (_.isEmpty(event.target.value)) {
       this.setState({
@@ -58,7 +60,10 @@ class Login extends Component {
     }
   }
 
-
+  /*
+  calls the login method in auth and sets the state accordingly
+  if login is successfull, redirect to home page
+   */
   handleSubmit(event) {
     event.preventDefault();
     const email = this.refs.email.getValue();
@@ -66,7 +71,6 @@ class Login extends Component {
       auth.login(email, pass, (loggedIn) => {
         if (!loggedIn)
           return this.setState({
-            error: true,
             snackbar: true,
             snackbarMsg: "Email/Password do not match"
           });
@@ -86,15 +90,13 @@ class Login extends Component {
     return (
       <div className="fullWidth adjustHeight columnflexcontainer ">
         <div className="cardStyles">
-          <div className="inlineflexcontainer fullWidth addPadding" >
+          <form className="inlineflexcontainer fullWidth addPadding" onSubmit={this.handleSubmit}>
             <div className="textFieldStyles">
               <TextField
                 floatingLabelText="Email"
                 ref="email"
                 errorText={this.state.emailError}
                 onChange={this.validateEmail}
-                floatingLabelStyle={{color: "#7E57C2"}}
-                floatingLabelFocusStyle={{color: "#7E57C2"}}
                 fullWidth={true}
               />
             </div>
@@ -104,8 +106,6 @@ class Login extends Component {
                 ref="pass"
                 errorText={this.state.passwordError}
                 onChange={this.validatePassword}
-                floatingLabelStyle={{color: "#7E57C2"}}
-                floatingLabelFocusStyle={{color: "#7E57C2"}}
                 fullWidth={true}
                 type="password"
               />
@@ -113,10 +113,10 @@ class Login extends Component {
             <div className="flexEnd  textFieldStyles">
               <RaisedButton
                 label="Sign In"
+                type="submit"
                 backgroundColor="#7E57C2"
-                labelColor="white"
-                onTouchTap={this.handleSubmit}
-                disabled={ isDisabled(this.state.emailError) || isDisabled(this.state.passwordError)}
+                labelColor="#FFFFFF"
+                disabled={ !_.isEmpty(this.state.emailError) || !_.isEmpty(this.state.passwordError)}
               />
             </div>
             <Snackbar
@@ -126,7 +126,7 @@ class Login extends Component {
               autoHideDuration={3000}
               onRequestClose={this.handleRequestClose}
             />
-          </div>
+          </form>
         </div>
       </div>
     );

@@ -41,7 +41,6 @@ module.exports = {
 };
 
 
-
 function loginRequest(email, pass, cb) {
   axios.post('users/login', {email: email, password: pass})
     .then((res) => {
@@ -52,7 +51,7 @@ function loginRequest(email, pass, cb) {
     })
     .catch((err) => {
       cb({
-        status:500,
+        status:401,
         data: err.response
       })
     })

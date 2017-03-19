@@ -41,7 +41,7 @@ function createUser(req,res,next) {
         if(err.detail.includes("email")) {
           res.status(401).json({data:"This email is already associated with another username"});
         }
-        if(err.detail.includes("usernam")) {
+        if(err.detail.includes("username")) {
           res.status(401).json({data:"This username is already registered"});
         }
         console.log('error signing up', err);
@@ -71,7 +71,7 @@ function loginUser(req,res,next) {
 }
 
 function getLocations(req,res,next) {
-  db.any("SELECT * from users_locations WHERE users_id=($1);" ,[req.user.id])
+  db.any("SELECT * from users_locations WHERE users_id=($1) order by users_locations.name;" ,[req.user.id])
     .then ((data) =>{
       res.data = data;
       next();

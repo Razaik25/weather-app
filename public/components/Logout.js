@@ -15,7 +15,8 @@ class Logout extends Component {
   render() {
     console.log("%c Logout Component -> Render ", "background: black; color: pink");
     return (
-      <div >
+      <div className="center intro">
+        <p>GoodBye, Have a great Day.</p>
       </div>
     );
   }

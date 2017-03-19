@@ -3,19 +3,10 @@ import axios from "axios";
 import {RaisedButton, TextField, Snackbar} from "material-ui";
 import _ from "lodash";
 
-function isDisabled(str) {
-  if(str) {
-    return true;
-  }
-  return false;
-}
 class SignUp extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      userNameError: null,
-      emailError: null,
-      passwordError: null,
       snackbar: false,
       snackbarMsg: ""
     };
@@ -28,13 +19,18 @@ class SignUp extends Component {
     console.log("%c SignUp Component -> Init ", "background: red; color: white");
   }
 
-
+  /*
+  sets the state for closing the alert message(snackbar)
+   */
   handleRequestClose() {
     this.setState({
       snackbar: false
     });
   }
 
+  /*
+  validates if the value is a valid email and sets the state accordingly
+   */
   validateEmail(event) {
     var reg = /^[a-z0-9][_,;:~!*$()=a-z'0-9-\.\+]*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$/;
     if (reg.test(event.target.value)) {
@@ -48,6 +44,9 @@ class SignUp extends Component {
     }
   }
 
+  /*
+   validates if the username is blank and sets the state accordingly
+   */
   validateName(event) {
     if (_.isEmpty(event.target.value)) {
       this.setState({
@@ -60,6 +59,9 @@ class SignUp extends Component {
     }
   }
 
+  /*
+   validates if the password is blank and sets the state accordingly
+   */
   validatePassword(event) {
     if (_.isEmpty(event.target.value)) {
       this.setState({
@@ -72,12 +74,22 @@ class SignUp extends Component {
     }
   }
 
+  /*
+  checks if the email, password, usernames values are empty or not
+  This function is in place as the validation for sign up fields is triggered by onChange event listener.
+  However, when sign up form is rendered for the first time all the fields are all blank and if the user clicks on the signup button this will not
+  trigger onChange event listener and the request will go the backend with empty fields
+  To prevent this behaviour this method is called in handleSubmit method before the request goes through to the backend
+   */
   validateData() {
     if(_.isEmpty(this.refs.email.getValue()) || _.isEmpty(this.refs.pass.getValue()) || _.isEmpty(this.refs.username.getValue())) {
       return true;
     }
   }
 
+  /*
+  if all the validation tests pass, post request goes to the backend to create the user in the db
+   */
   handleSubmit() {
     const email = this.refs.email.getValue();
     const pass = this.refs.pass.getValue();
@@ -110,7 +122,7 @@ class SignUp extends Component {
   }
 
   render() {
-    console.log("%c SignUp Component -> Render ", "background: black; color: pink");
+    console.log("%c SignUp Component -> Render ", "background: black; color: pink", this.state);
     return (
       <div className="fullWidth adjustHeight columnflexcontainer ">
         <div className="cardStyles">
@@ -154,9 +166,9 @@ class SignUp extends Component {
                 label="Sign Up"
                 type="submit"
                 backgroundColor="#7E57C2"
-                labelColor="white"
+                labelColor="#FFFFFF"
                 onTouchTap={this.handleSubmit}
-                disabled={isDisabled(this.state.userNameError) || isDisabled(this.state.emailError) || isDisabled(this.state.passwordError)}
+                disabled={ !_.isEmpty(this.state.userNameError) || !_.isEmpty(this.state.emailError) || !_.isEmpty(this.state.passwordError)}
               />
             </div>
             <Snackbar

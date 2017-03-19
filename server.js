@@ -18,8 +18,8 @@ app.use(logger('dev'));
 app.use('/users', userRoutes);
 app.use('/weatherApp', weatherAppRoutes);
 
-app.get('/', (req, res) => {
-  res.sendFile('index.html');
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname,'public/index.html'));
 });
 
 app.listen(port, () => {

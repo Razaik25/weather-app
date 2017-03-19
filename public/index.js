@@ -10,6 +10,10 @@ import Home from "./components/Home";
 import Logout from "./components/Logout";
 import SignUp from "./components/SignUp";
 
+
+/*
+ if a user is not logged then redirect to login page
+ */
 function requireAuth(nextState, replace) {
   if (!auth.loggedIn()) {
     replace({
@@ -31,20 +35,25 @@ export default class App extends Component {
     console.log("%c App Component -> Init ", "background: red; color: white");
   }
 
+  /*
+   updates the log in information in the state
+   */
   updateAuth(loggedIn) {
     this.setState({
       loggedIn: loggedIn
     });
   }
 
+  /*
+  calls auth onChange and login methods to get the updated log in information
+   */
   componentWillMount() {
     auth.onChange = this.updateAuth;
     auth.login();
   }
 
-
   render() {
-    console.log("%c App Component -> Render ", "background: black; color: pink", this.state);
+    console.log("%c App Component -> Render ", "background: black; color: pink");
     return (
       <MuiThemeProvider>
         <div>
@@ -72,7 +81,9 @@ export default class App extends Component {
               />
               <div className="intro">
                 Welcome to Weather Bug
-                <p><Link className="pinkColor" to="/signup">Sign Up</Link>for a free account  or<Link  className="pinkColor" to="/login">Login</Link>to track the weather of your saved locations real-time</p>
+                <p><Link className="pinkColor" to="/signup">Sign Up</Link>for a free account or<Link
+                  className="pinkColor" to="/login">Login</Link>to track the weather of your saved locations real-time
+                </p>
               </div>
               {this.props.children}
             </div>

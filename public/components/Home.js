@@ -9,7 +9,9 @@ import {
   CardText,
   Snackbar,
   IconButton,
-  RaisedButton
+  RaisedButton,
+  RadioButton,
+  RadioButtonGroup
 } from "material-ui";
 import axios from "axios";
 import auth from "../auth";
@@ -17,6 +19,9 @@ import _ from "lodash";
 import moment from "moment";
 import Update from "material-ui/svg-icons/action/update";
 
+/*
+converts the response from api to format that is consistent with how data that is saved in the db
+ */
 function processSearchResponse(data) {
   let dataToReturn = [];
   _.forEach(data, function (v) {
@@ -60,12 +65,19 @@ class Home extends Component {
     console.log("%c Home Component -> Init ", "background: red; color: white");
   }
 
+  /*
+   sets the state for closing the alert message(snackbar)
+   */
   handleRequestClose() {
     this.setState({
       snackbar: false
     });
   }
 
+  /*
+  post request to the back end to save the location requested by the user
+  and sets the state accordingly
+   */
   handleSaveLocation() {
     axios({
       method: 'post',
@@ -104,6 +116,10 @@ class Home extends Component {
       }.bind(this));
   }
 
+  /*
+   delete request to the back end to delete the location requested by the user
+   and sets the state accordingly
+   */
   handleDeleteLocation(locationId) {
     axios({
       method: 'delete',
@@ -130,12 +146,18 @@ class Home extends Component {
       }.bind(this));
   }
 
+  /*
+  clears the result of a search
+   */
   handleClearSearch() {
     this.setState({
       searchResult: null
     });
   }
 
+  /*
+  method to render the locations
+   */
   renderLocations(locations, type) {
     let self = this;
     return locations.map(function (location) {
@@ -161,14 +183,14 @@ class Home extends Component {
           <CardActions>
             <FlatButton
               label={type}
-              labelStyle={{color:"#7E57C2"}}
+              labelStyle={{color: "#7E57C2"}}
               onTouchTap={type === "Save" ? () => self.handleSaveLocation() : () => self.handleDeleteLocation(location.location_id)}
             />
             {
               type === "Save" ? <FlatButton
                 label="Clear"
                 primary={true}
-                labelStyle={{color:"#7E57C2"}}
+                labelStyle={{color: "#7E57C2"}}
                 onTouchTap={self.handleClearSearch}
               /> : ""
             }
@@ -178,6 +200,10 @@ class Home extends Component {
     });
   }
 
+  /*
+  gets all the saved locations for the current user from the database
+  called in the constructor of the component
+   */
   getLocations() {
     axios({
       method: 'get',
@@ -194,6 +220,11 @@ class Home extends Component {
       }.bind(this));
   }
 
+  /*
+  loops through all the saved locations for a user and then makes an api call to get the current weather forecast for each locaiton
+  checks in the api response if the time stamp is same as the timestamp in the db
+  if it is not then makes a put request to the backend to update the location in the database
+   */
   checkForUpdates() {
     let self = this;
     (this.state.savedLocations || []).map(function (location) {
@@ -243,22 +274,27 @@ class Home extends Component {
     });
   }
 
-
+  /*
+  sets the state accordingly when onChange is triggered on search field
+   */
   handleUpdateInput(event) {
     this.setState({
       searchQuery: event.target.value
     });
   }
 
+  /*
+  checks the current search query matches any of the saved locaitons
+   */
   validateSearch() {
-    // more stuff
-    let sameLocation;
-    sameLocation = this.state.savedLocations.some(function (location) {
+    return this.state.savedLocations.some(function (location) {
       return location.name.toUpperCase() === this.state.searchQuery.toUpperCase();
     }.bind(this));
-    return sameLocation;
   }
 
+  /*
+  if all the validations are in place, makes an api call to get the data for the location that user is searching for
+   */
   handleSearch() {
     if (!this.validateSearch()) {
       axios({
@@ -311,7 +347,7 @@ class Home extends Component {
             className="searchButton"
             label="Search"
             backgroundColor="#7E57C2"
-            labelColor="white"
+            labelColor="#FFFFFF"
             onTouchTap={this.handleSearch}
           />
           <IconButton

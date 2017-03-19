@@ -4,7 +4,7 @@ body {
 }
 
 a {
-    color: white;
+    color: #FFFFFF;
     text-decoration: none;
     margin: 10px;
 }
@@ -27,18 +27,16 @@ a {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .columnflexcontainer {
     flex-direction: column;
-    justify-content: center;
 }
 
 .inlineflexcontainer {
     width: 60%;
     flex-direction: row;
-    align-items: center;
-    justify-content: center;
 }
 
 .inlineflexcontainer, .flexEnd {
@@ -104,9 +102,5 @@ a {
 }
 
 .pinkColor {
-    color: rgb(255, 64, 129);
-}
-
-.buttonColor {
-    background-color: rgb(103,58,183) !important;
+    color: #FF4081;
 }
