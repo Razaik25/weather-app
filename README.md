@@ -5,6 +5,11 @@ Users can update the locations and track the locations in real time
 
 ### Deployed link
 https://blooming-tor-12711.herokuapp.com/
+```
+Demo credentials
+email: guest@test.com
+password: test
+```
 
 ### Third Party APIs
 
