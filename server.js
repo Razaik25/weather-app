@@ -14,10 +14,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-
 app.use('/users', userRoutes);
 app.use('/weatherApp', weatherAppRoutes);
 
+/*
+  Always returns index.html and from that react router takes in and gets the right route
+ */
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname,'public/index.html'));
 });

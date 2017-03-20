@@ -3,6 +3,9 @@
 Lets users signup and save locations for which they want to track the weather.
 Users can update the locations and track the locations in real time
 
+### Deployed link
+https://blooming-tor-12711.herokuapp.com/
+
 ### Third Party APIs
 
 ```
