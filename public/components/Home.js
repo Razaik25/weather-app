@@ -9,9 +9,7 @@ import {
   CardText,
   Snackbar,
   IconButton,
-  RaisedButton,
-  RadioButton,
-  RadioButtonGroup
+  RaisedButton
 } from "material-ui";
 import axios from "axios";
 import auth from "../auth";
@@ -20,7 +18,7 @@ import moment from "moment";
 import Update from "material-ui/svg-icons/action/update";
 
 /*
-converts the response from api to format that is consistent with how data that is saved in the db
+converts the response from api to a format that is consistent with how data is saved in the db
  */
 function processSearchResponse(data) {
   let dataToReturn = [];
